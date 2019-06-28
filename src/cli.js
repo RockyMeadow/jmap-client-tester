@@ -19,7 +19,7 @@ const messagePropertyMapping = {
 }
 
 module.exports = {
-  getMailboxes: (...arguments) => {res.ids
+  getMailboxes: (...arguments) => {
     if (!arguments.length) arguments = Object.keys(mailboxPropertyMapping);
 
     return getMailboxes({ properties: arguments }).then(res => {
