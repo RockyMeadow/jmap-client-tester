@@ -14,8 +14,8 @@ const mailboxPropertyMapping = {
 const messagePropertyMapping = {
   id: 'Message Id',
   from: 'From',
-  receivedAt: 'Received At',
-  subject: 'Subject'
+  subject: 'Subject',
+  receivedAt: 'Received At'
 }
 
 module.exports = {
