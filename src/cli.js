@@ -1,3 +1,6 @@
+const createMailbox = require('./lib/mailbox/create');
+const updateMailbox = require('./lib/mailbox/update');
+const deleteMailbox = require('./lib/mailbox/delete');
 const getMailboxes = require('./lib/mailbox/get');
 const getMessageList = require('./lib/message/getList');
 const getMessage = require('./lib/message/get');
@@ -19,6 +22,38 @@ const messagePropertyMapping = {
 }
 
 module.exports = {
+  createMailbox: name => createMailbox(name).then(res => {
+    const tableHeaders = ['Created Mailbox Id'];
+    const tableBodyRows = [[res.created[Object.keys(res.created)[0]].id]];
+
+    return getCLITable(tableHeaders, tableBodyRows);
+  }),
+  updateMailboxName: (id, name) => updateMailbox(id, name).then(res => {
+    const tableHeaders = ['Updated Mailbox Id'];
+    const tableBodyRows = [[Object.keys(res.updated)[0]]];
+
+    return getCLITable(tableHeaders, tableBodyRows);
+  }),
+  deleteMailboxes: (...ids) => deleteMailbox(ids).then(res => {
+    let result = '';
+
+    if (res.destroyed) {
+      const tableHeadersA = ['Deleted Mailbox Ids'];
+      const tableBodyRowsA = res.destroyed.map(mailboxId => [mailboxId]);
+
+      result = getCLITable(tableHeadersA, tableBodyRowsA);
+    }
+
+    if (res.notDestroyed) {
+      const tableHeadersB = ['Not Deleted Mailbox Ids'];
+      const tableBodyRowsB = Object.keys(res.notDestroyed).map(mailboxId => [mailboxId]);
+   
+      if (res.destroyed) result += '\n\n';
+      result += getCLITable(tableHeadersB, tableBodyRowsB);
+    }
+
+    return result;
+  }),
   getMailboxes: (...arguments) => {
     if (!arguments.length) arguments = Object.keys(mailboxPropertyMapping);
 
@@ -28,7 +63,6 @@ module.exports = {
 
       return getCLITable(tableHeaders, tableBodyRows);
     })
-    .catch(err => console.log(err))
   },
   getMessageList: (...arguments) => {    
     return getMessageList({ mailboxId: arguments[0] }).then(res => {      

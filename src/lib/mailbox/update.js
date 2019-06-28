@@ -1,13 +1,11 @@
 const { accountId } = require('../../config/auth');
 const jmapClient = require('../jmapClient');
 
-module.exports = mailboxIdToUpdate => {
+module.exports = (mailboxIdToUpdate, name) => {
   return jmapClient.setMailboxes({
     accountId,
     update: {
-      [mailboxIdToUpdate]: {
-        name: 'This mailbox name has changed'
-      }
+      [mailboxIdToUpdate]: { name }
     }
   });
 };
