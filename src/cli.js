@@ -19,7 +19,7 @@ const messagePropertyMapping = {
 }
 
 module.exports = {
-  getMailboxes: (...arguments) => {
+  getMailboxes: (...arguments) => {res.ids
     if (!arguments.length) arguments = Object.keys(mailboxPropertyMapping);
 
     return getMailboxes({ properties: arguments }).then(res => {
@@ -30,8 +30,8 @@ module.exports = {
     })
     .catch(err => console.log(err))
   },
-  getMessageList: (...arguments) => {
-    return getMessageList(arguments).then(res => {      
+  getMessageList: (...arguments) => {    
+    return getMessageList({ mailboxId: arguments[0] }).then(res => {      
       const tableHeaders = ['#', 'Message ID'];
       const tableBodyRows = res.ids.map((id, index) => ([index+1, id]));
 
