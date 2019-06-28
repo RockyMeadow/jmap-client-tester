@@ -1,4 +1,5 @@
 const getMailboxes = require('./lib/mailbox/get');
+const getMessageList = require('./lib/message/getList');
 const getCLITable = require('./utils/prettier');
 
 const mailboxPropertyMapping = {
@@ -20,6 +21,13 @@ module.exports = {
       return getCLITable(tableHeaders, tableBodyRows);
     })
     .catch(err => console.log(err))
+  },
+  getMessageList: (...argument) => {
+    return getMessageList(argument).then(res => {
+      const tableHeaders = ['Message ID'];
+      const tableBodyRows = res.
+      return getCLITable(tableHeaders, tableBodyRows);
+    })
   }
 };
 
